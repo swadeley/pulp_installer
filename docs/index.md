@@ -38,8 +38,8 @@ multiple hosts.
 * One or more hosts are configured by the [`pulp_workers`](roles/pulp_workers) role to do tasks like
   synchronize repositories.
 * The content is stored on the "Storage backend", either a shared filesystem (like NFS) or
-  [object storage](objectstorage). Or if there is a single pulp_api/pulp_content/pulp_workers server, a
-  single folder on disk (/var/lib/pulp).
+  [object storage](objectstorage). Or if there is a single pulp_api, pulp_content, pulp_workers server, a
+  single folder on disk (`/var/lib/pulp`).
 * The rest of the state of the application is stored on a PostgreSQL host configured by the
   [`pulp_database`](roles/pulp_database) role. Although not pictured, this can be an existing
   [PostgreSQL](https://www.postgresql.org) host/cluster. 
@@ -56,10 +56,10 @@ Before you install Pulp, review the [architecture and component documentation](h
 The Ansible [control node](https://docs.ansible.com/ansible/2.5/network/getting_started/basic_concepts.html#control-node)
 (i.e., your workstation) must have Python (>= 2.7) and Ansible (>= 2.9) installed.
 
-Ensure that your server meets the [hardware requirements](https://docs.pulpproject.org/pulpcore/installation/hardware-requirements.html) to install and run Pulp.
+Ensure that the server you use for Pulp, the Ansible [managed node](https://docs.ansible.com/ansible/2.5/network/getting_started/basic_concepts.html#managed-nodes),
+meets the [hardware requirements](https://docs.pulpproject.org/pulpcore/components.html#hardware-requirements) to install and run Pulp.
 
-Ensure that your server, AKA the Ansible [managed node](https://docs.ansible.com/ansible/2.5/network/getting_started/basic_concepts.html#managed-nodes),
-runs one of these currently supported operating systems:
+Ensure that the server runs one of these currently supported operating systems:
 
 - CentOS/RHEL/Rocky 7, 8 or 9
 - Fedora 32 or later
@@ -69,8 +69,8 @@ runs one of these currently supported operating systems:
 The server must have the command `sudo` installed. (If you are using an alternative [become
 method](https://docs.ansible.com/ansible/latest/user_guide/become.html), sudo is not needed.)
 
-The server cannot provide any other HTTP (port 80, 443) service on the same hostname as Pulp's API. The only
-exception is Pulp 2. The REST APIs for Pulp 2 and Pulp 3 can be served on the same hostname as
+The server cannot provide any other HTTP service (port 80, 443) on the same host name as Pulp's API. The only
+exception is Pulp 2. The REST APIs for Pulp 2 and Pulp 3 can be served on the same host name as
 long as the `apache` webserver is deployed for both.
 
 NOTE: These server requirements assume you are deploying Pulp to a single server. If you are deploying it
@@ -83,7 +83,7 @@ If you are using an existing PostgreSQL host/cluster, version 10 or higher is re
 If you are using an existing Redis host/cluster, version 3 or higher is required.
 
 The Ansible collection requires [geerlingguy.postgresql](https://galaxy.ansible.com/geerlingguy/postgresql) role,
-which you can install on the Ansible control node from ansible-galaxy.
+which you can install on the Ansible control node from ansible-galaxy:
 
 ```bash
 ansible-galaxy install geerlingguy.postgresql
@@ -97,21 +97,20 @@ This [collection](https://docs.ansible.com/ansible/latest/user_guide/collections
 be helpful, but even if you are new to Ansible, this section will get you started, or you can try
 the Vagrant installations to bypass the Ansible boilerplate.
 
-First, you will need to configure SSH between your control node and your managed node. With Ansible, typically this is done via the following to eliminate the need to enter a password:
+On the managed node, ensure SSH is running and enable password-less login from the control node:
 
 ```bash
 ssh-copy-id <managed_node_username>@<managed_node>
 ```
 
-When you can SSH into the managed node without a password, you are ready to move to the next step.
+On the control node, add the managed node's host name or IP address to `/etc/ansible/hosts`.
 
-Ensure that Ansible can communicate with the managed node.
+Ensure that Ansible on the control node can communicate with the managed node:
 
 ```bash
 ansible all -i <managed_node>, -m ping -u <managed_node_username>
 ```
 
-Also, like many Ansible roles/collections, these roles are idempotent.
 
 Roles
 -----
@@ -127,7 +126,7 @@ Roles
 - [pulp_redis](roles/pulp_redis): install and start Redis for Pulp 3.
 - [pulp_webserver](roles/pulp_webserver): install, configure, start, and enable a front-end web server that combines pulp_api and pulp_content into 1 service.
 - [pulp_workers](roles/pulp_workers): install, configure, and set the state of pulp workers.
-- [pulp_devel](roles/pulp_devel): installs useful tools and adds some config files for a Pulp 3 development environment.
+- [pulp_devel](roles/pulp_devel): installs useful tools and adds some configuration files for a Pulp 3 development environment.
 
 `pulp_installer` also is equipped with these helper roles for pulp_common:
 

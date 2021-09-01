@@ -6,11 +6,13 @@ The Pulp 3 Ansible installer is a collection of roles to install or upgrade Pulp
 
 System Requirements
 -------------------
-Review the [system requirements](index.md#system-requirements) on the home page
+Review the [system requirements](index.md#system-requirements) on the home page.
+Installing Pulp on a dedicated machine is recommended; uninstalling Pulp is then a matter of deleting or reprovisioning.
+
 
 Installation
 ------------
-The Pulp 3 Ansible installer itself is normally installed.
+The Pulp 3 Ansible installer itself is normally installed on the control node.
 
 The recommended installation method is from ansible-galaxy:
 
@@ -38,7 +40,7 @@ section to learn more about how to check the installation integrity.
 
 The default Pulp admin user of the example playbook is `admin` and the default password is specified by you in the playbook text below.
 
-The secret_key also needs to be specified, it is recommended to set it to
+The secret key also needs to be specified, it is recommended to set it to
 50 random characters from the set `abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)`
 
 Example Playbook for Orchestration
@@ -170,17 +172,17 @@ vim install.yml
 
 4. Run the playbook:
 ```bash
-ansible-playbook install.yml -u <managed_node_username> --ask-become-pass -i <managed_node_hostname>,
+ansible-playbook install.yml -u <managed_node_username> --ask-become-pass -i <managed_node_hostname>
 ```
 <script id="asciicast-335829" src="https://asciinema.org/a/335829.js" async data-autoplay="true" data-speed="2"></script>
 
 Further Customization
 ---------------------
 
-This Getting Started guide is not exhaustive. See [Customizing Your Pulp Deployment](customizing.md)
+See [Customizing Your Pulp Deployment](customizing.md)
 for an explanation of the variables (`vars:`) you can put within the example playbook.
 
-Also see [Object Storage](objectstorage.md) and [Let's Encrypt](letsencrypt.md) for setting up either of those 2 integrations.
+See [Object Storage](objectstorage.md) and [Let's Encrypt](letsencrypt.md) for setting up either of those integrations.
 
 For setting up a cluster rather than a single server, see [Clustering](clustering.md).
 
@@ -239,6 +241,5 @@ pip show pulp-{container,file,maven,python,rpm} pulpcore
 Uninstall
 ---------
 
-For now, we don't have a playbook to uninstall Pulp. If you find it useful, please consider opening an [issue to Pulp community repo](https://github.com/pulp/pulp_installer/issues/new/choose).
+For now, we don't have a playbook to uninstall Pulp. Make use of dedicated virtual machines where possible. Alternately, open an [issue to Pulp community repo](https://github.com/pulp/pulp_installer/issues/new/choose).
 
-We recommend that users only install Pulp on the machine, so in a virtual environment, for example, uninstalling Pulp would be a matter of deleting the VM.
