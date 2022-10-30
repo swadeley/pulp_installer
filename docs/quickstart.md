@@ -190,7 +190,7 @@ For setting up a cluster rather than a single server, see [Clustering](clusterin
 Post installation tasks
 -----------------------
 
-After you have installed Pulp, install the [Pulp 3 CLI](https://github.com/pulp/pulp-cli/blob/develop/docs/quickstart.md).
+After you have installed Pulp, install the [Pulp 3 CLI](https://docs.pulpproject.org/pulp_cli/quickstart/).
 
 
 #### Checking the installation
